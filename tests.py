@@ -2,6 +2,8 @@
 Testing the Tkinter GUI for beginners...
 """
 
+
+"""
 import time
 import tkinter as tk
 
@@ -14,10 +16,12 @@ city.pack()
 
 city.create_rectangle(0, 0, 20, 20, fill="lawn green")
 city.create_rectangle(20, 0, 40, 20, fill="red")
+
 time.sleep(1)
 
 tk.mainloop()
 
+"""
 
-
-
+city_data = [[0 for x in range(20)] for y in range(50)]
+print(city_data)
