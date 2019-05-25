@@ -1,5 +1,6 @@
 import tkinter as tk
 import numpy as np
+import Infrastructure as inf
 
 # City size in pixels
 CITY_WIDTH = 1200
@@ -40,10 +41,43 @@ class City:
                                         width_pixel + self.square_size, height_pixel + self.square_size,
                                         fill="lawn green")
         b = tk.Button(self.master, text="Hello", command=self.check)
-        b.pack()
+        b.pack(side="left")
+        b2 = tk.Button(self.master, text="trial", command=self.create_building)
+        b2.pack(side="right")
 
     def check(self):
         print(self.city_data.shape)
+
+    def create_building(self):
+        window = tk.Tk()
+        window.title("Add a building")
+        l_name = tk.Label(window, text="House Name:")
+        l_name.grid(column=0, row=0)
+        e_name = tk.Entry(window)
+        e_name.grid(column=1, row=0)
+        l_ul_x = tk.Label(window, text="Upper Left X:")
+        l_ul_x.grid(column=0, row=1)
+        e_ul_x = tk.Entry(window)
+        e_ul_x.grid(column=1, row=1)
+        l_ul_y = tk.Label(window, text="Upper Left Y:")
+        l_ul_y.grid(column=0, row=2)
+        e_ul_y = tk.Entry(window)
+        e_ul_y.grid(column=1, row=2)
+        l_br_x = tk.Label(window, text="Bottom Right X:")
+        l_br_x.grid(column=0, row=3)
+        e_br_x = tk.Entry(window)
+        e_br_x.grid(column=1, row=3)
+        l_br_y = tk.Label(window, text="Bottom Right Y:")
+        l_br_y.grid(column=0, row=4)
+        e_br_y = tk.Entry(window)
+        e_br_y.grid(column=1, row=4)
+        b_cancel = tk.Button(window, text="Cancel", command=window.destroy)
+        b_cancel.grid(column=0, row=5)
+        # add save function with a Building class creation
+        # b_save = tk.Button(window, text="Save", command=#####)
+        # b_save.grid(column=1, row=5)
+
+        window.mainloop()
 
 
 my_city = City(CITY_WIDTH, CITY_HEIGHT, SQUARE_SIZE)
