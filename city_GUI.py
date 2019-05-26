@@ -71,13 +71,21 @@ class City:
         l_br_y.grid(column=0, row=4)
         e_br_y = tk.Entry(window)
         e_br_y.grid(column=1, row=4)
-        b_cancel = tk.Button(window, text="Cancel", command=window.destroy)
+        values_arr = [e_ul_x, e_ul_y, e_br_x, e_br_y]
+        b_cancel = tk.Button(window, text="Cancel", command=lambda: self.save_data(values_arr=values_arr, house=e_name))
         b_cancel.grid(column=0, row=5)
         # add save function with a Building class creation
-        # b_save = tk.Button(window, text="Save", command=#####)
-        # b_save.grid(column=1, row=5)
+        b_save = tk.Button(window, text="Save", command=lambda: self.save_data(values_arr=values_arr, house=e_name))
+        b_save.grid(column=1, row=5)
 
         window.mainloop()
+
+    @staticmethod
+    def save_data(infr, values_arr, house):
+        if infr == "Building":
+
+        for value in values_arr:
+            print(value.get())
 
 
 my_city = City(CITY_WIDTH, CITY_HEIGHT, SQUARE_SIZE)
