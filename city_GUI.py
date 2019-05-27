@@ -17,7 +17,7 @@ class City:
 
     # City data parameters:
     # Coordinate data
-    city_data = []
+    city_grid = []
     # Data about infrastructure
     buildings_objects = []
     roads_objects = []
@@ -28,7 +28,7 @@ class City:
         self.city_height = city_height
         self.square_size = square_size
         # init city to empty
-        self.city_data = np.zeros((city_height, city_width))
+        self.city_grid = np.zeros((city_height, city_width))
         self.master = tk.Tk()
         self.create_gui()
 
@@ -53,7 +53,7 @@ class City:
         b2.pack(side="right")
 
     def check(self):
-        print(self.city_data.shape)
+        print(self.city_grid.shape)
 
     def add_building(self):
         window = tk.Tk()
@@ -87,8 +87,7 @@ class City:
 
         window.mainloop()
 
-    @staticmethod
-    def create_building(values_arr, gui):
+    def create_building(self, values_arr, gui):
         name = values_arr[0].get()
         ul_x = values_arr[1].get()
         ul_y = values_arr[2].get()
@@ -101,7 +100,35 @@ class City:
                 print("Error, one of the values is not an integer. Try again.")
                 gui.destroy()
         # checking for duplications:
-        # 
+        # ##
+        self.check_run_over(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, gui=gui)
+        # check corners
+        building = inf.Building(ul_x, ul_y, br_x, br_y, name)
+        self.buildings_objects.append(building)
+        self.change_city_grid(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, infr_convention=HOUSE)
+        self.change_city_gui()
+
+    def change_city_grid(self, ul_x, ul_y, br_x, br_y, infr_convention):
+        for i in range(int(br_y), int(ul_y)):
+            for j in range(int(ul_x), int(br_x)):
+                self.city_grid[i][j] = infr_convention
+
+    def change_city_gui(self):
+        for i in range(self.city_height / self.square_size):
+            for j in range(self.city_width / self.square_size):
+                width_pixel = j * self.square_size
+                height_pixel = i * self.square_size
+                self.master.create_rectangle(width_pixel, height_pixel, width_pixel + self.square_size,
+                                             height_pixel + self.square_size, fill="brown")
+
+    def check_run_over(self, ul_x, ul_y, br_x, br_y, gui):
+        # the coordinates are actually a mirror image
+        for i in range(int(br_y), int(ul_y)):
+            for j in range(int(ul_x), int(br_x)):
+                if self.city_grid[i][j] != 0:
+                    print("Error, one of the coordinates is already full")
+                    gui.destroy()
+
 
 
 my_city = City(CITY_WIDTH, CITY_HEIGHT, SQUARE_SIZE)
