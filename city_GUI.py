@@ -31,12 +31,14 @@ class City:
         self.city_grid = np.zeros((city_height, city_width))
         self.master = tk.Tk()
         self.create_gui()
+        # basic init
+        self.city = 0
 
     def create_gui(self):
-        city = tk.Canvas(self.master, width=self.city_width, height=self.city_height)
-        city.pack()
+        self.city = tk.Canvas(self.master, width=self.city_width, height=self.city_height)
+        self.city.pack()
 
-        self.init_empty_city(city)
+        self.init_empty_city(self.city)
         tk.mainloop()
 
     def init_empty_city(self, canvas):
@@ -93,33 +95,37 @@ class City:
         ul_y = values_arr[2].get()
         br_x = values_arr[3].get()
         br_y = values_arr[4].get()
+        error = False
         # checking coordinates data types:
         coordinates = [ul_x, ul_y, br_x, br_y]
         for coord in coordinates:
             if not hlp.is_int(coord):
                 print("Error, one of the values is not an integer. Try again.")
                 gui.destroy()
-        # checking for duplications:
-        # ##
-        self.check_run_over(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, gui=gui)
-        # check corners
-        building = inf.Building(ul_x, ul_y, br_x, br_y, name)
-        self.buildings_objects.append(building)
-        self.change_city_grid(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, infr_convention=HOUSE)
-        self.change_city_gui()
+                error = True
+        if not error:
+            # checking for duplications:
+            # ##
+            self.check_run_over(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, gui=gui)
+            # check corners
+            building = inf.Building(ul_x, ul_y, br_x, br_y, name)
+            self.buildings_objects.append(building)
+            self.change_city_grid(ul_x=ul_x, ul_y=ul_y, br_x=br_x, br_y=br_y, infr_convention=HOUSE)
+            self.change_city_gui(interface=self.city)
 
     def change_city_grid(self, ul_x, ul_y, br_x, br_y, infr_convention):
         for i in range(int(br_y), int(ul_y)):
             for j in range(int(ul_x), int(br_x)):
                 self.city_grid[i][j] = infr_convention
 
-    def change_city_gui(self):
-        for i in range(self.city_height / self.square_size):
-            for j in range(self.city_width / self.square_size):
+    def change_city_gui(self, interface):
+        for i in range(int(self.city_height / self.square_size)):
+            for j in range(int(self.city_width / self.square_size)):
                 width_pixel = j * self.square_size
                 height_pixel = i * self.square_size
-                self.master.create_rectangle(width_pixel, height_pixel, width_pixel + self.square_size,
-                                             height_pixel + self.square_size, fill="brown")
+                interface.create_rectangle(width_pixel, height_pixel,
+                                             width_pixel + self.square_size, height_pixel + self.square_size,
+                                             fill="brown")
 
     def check_run_over(self, ul_x, ul_y, br_x, br_y, gui):
         # the coordinates are actually a mirror image
@@ -128,7 +134,6 @@ class City:
                 if self.city_grid[i][j] != 0:
                     print("Error, one of the coordinates is already full")
                     gui.destroy()
-
 
 
 my_city = City(CITY_WIDTH, CITY_HEIGHT, SQUARE_SIZE)

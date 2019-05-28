@@ -3,11 +3,11 @@ class Building:
     def __init__(self, x1, y1, x2, y2, house_name):
         self.house_name = house_name
         # upper left:
-        self.ul_x = x1
-        self.ul_y = y1
+        self.ul_x = int(x1)
+        self.ul_y = int(y1)
         # bottom right:
-        self.br_x = x2
-        self.br_y = y2
+        self.br_x = int(x2)
+        self.br_y = int(y2)
         self.size = self.infr_size_calc(self.ul_x, self.ul_y, self.br_x, self.br_y)
 
     def infr_size_calc(self, ul_x, ul_y, br_x, br_y):
